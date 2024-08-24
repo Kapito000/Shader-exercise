@@ -15,8 +15,8 @@ Shader "CookbookShaders/BasicDiffuse"
         LOD 200
 
         CGPROGRAM
-        #pragma surface surf Lambert
-        
+        #pragma surface surf BasicDiffuse
+
         float4 _EmissiveColor;
         float4 _AmbientColor;
         float _MySliderValue;
@@ -32,6 +32,16 @@ Shader "CookbookShaders/BasicDiffuse"
             c = pow(_EmissiveColor + _AmbientColor, _MySliderValue);
             o.Albedo = c.rgb;
             o.Alpha = c.a;
+        }
+
+        inline float4 LightingBasicDiffuse(SurfaceOutput s, fixed3 lightDir,
+            fixed atten)
+        {
+            float difLight = max(0, dot(s.Normal, lightDir));
+            float4 col;
+            col.rgb = s.Albedo * _LightColor0.rgb * (difLight * atten * 2);
+            col.a = s.Alpha;
+            return col;
         }
         ENDCG
     }
