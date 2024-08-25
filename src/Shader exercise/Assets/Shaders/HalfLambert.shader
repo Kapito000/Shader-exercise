@@ -1,10 +1,11 @@
-Shader "CookbookShaders/BasicDiffuse"
+Shader "CookbookShaders/Half lambert"
 {
     Properties
     {
         _EmissiveColor("Emissive color", Color) = (1,1,1,1)
         _AmbientColor("Ambient color", Color) = (1,1,1,1)
         _MySliderValue("This is a Slider", Range(0,10)) = 2.5
+        _HalfLambertRation("Half lamber ratio", Float) = 0.5
     }
     SubShader
     {
@@ -20,6 +21,7 @@ Shader "CookbookShaders/BasicDiffuse"
         float4 _EmissiveColor;
         float4 _AmbientColor;
         float _MySliderValue;
+        float _HalfLambertRation;
 
         struct Input
         {
@@ -37,9 +39,11 @@ Shader "CookbookShaders/BasicDiffuse"
         inline float4 LightingBasicDiffuse(SurfaceOutput s, fixed3 lightDir,
             fixed atten)
         {
-            float difLight = max(0, dot(s.Normal, lightDir));
+            float difLight = dot(s.Normal, lightDir);
+            float hLambert = difLight * 0.5 + _HalfLambertRation;
+
             float4 col;
-            col.rgb = s.Albedo * _LightColor0.rgb * (difLight * atten);
+            col.rgb = s.Albedo * _LightColor0.rgb * (hLambert * atten);
             col.a = s.Alpha;
             return col;
         }
