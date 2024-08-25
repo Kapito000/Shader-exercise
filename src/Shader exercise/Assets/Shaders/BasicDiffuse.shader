@@ -37,9 +37,10 @@ Shader "CookbookShaders/BasicDiffuse"
         inline float4 LightingBasicDiffuse(SurfaceOutput s, fixed3 lightDir,
             fixed atten)
         {
-            float difLight = max(0, dot(s.Normal, lightDir));
+            float difLight = -min(0, dot(s.Normal, lightDir));
+            // float difLight = max(0, dot(s.Normal, lightDir));
             float4 col;
-            col.rgb = s.Albedo * _LightColor0.rgb * (difLight * atten * 2);
+            col.rgb = s.Albedo * _LightColor0.rgb * (difLight * atten);
             col.a = s.Alpha;
             return col;
         }
