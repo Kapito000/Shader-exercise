@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ScalarDotCalculator : MonoBehaviour
+public sealed class ScalarDotCalculator : MonoBehaviour
 {
 	public float ScalarDot;
 	[Space]
