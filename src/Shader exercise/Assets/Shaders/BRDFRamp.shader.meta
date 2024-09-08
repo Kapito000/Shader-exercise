@@ -3,6 +3,7 @@ guid: c843242d28dbccf4ea73e71978f3eab8
 ShaderImporter:
   externalObjects: {}
   defaultTextures:
+  - _MainTex: {instanceID: 0}
   - _RampTex: {instanceID: 0}
   nonModifiableTextures: []
   userData: 

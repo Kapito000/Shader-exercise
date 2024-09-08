@@ -1,10 +1,11 @@
-Shader "CookbookShaders/InverseRampDiffuse"
+Shader "CookbookShaders/BRDFRamp"
 {
     Properties
     {
+        _MainTex("Main texture", 2D) = ""{}
+        _RampTex("Ramp texture", 2D) = ""{}
         _AmbientColor("Ambient color", Color) = (1,1,1,1)
         _HalfLambertRation("Half lamber ratio", Float) = 0.5
-        _RampTex("Ramp texture", 2D) = ""
     }
     SubShader
     {
@@ -17,9 +18,10 @@ Shader "CookbookShaders/InverseRampDiffuse"
         CGPROGRAM
         #pragma surface surf BasicDiffuse
 
+        sampler2D _MainTex;
+        sampler2D _RampTex;
         float4 _AmbientColor;
         float _HalfLambertRation;
-        sampler2D _RampTex;
 
         struct Input
         {
@@ -28,16 +30,18 @@ Shader "CookbookShaders/InverseRampDiffuse"
 
         void surf(Input IN, inout SurfaceOutput o)
         {
-            o.Albedo = _AmbientColor.rgb;
-            o.Alpha = _AmbientColor.a;
+            fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _AmbientColor;
+            o.Albedo = c.rgb;
+            o.Alpha = c.a;
         }
 
         inline float4 LightingBasicDiffuse(SurfaceOutput s, fixed3 lightDir,
-            fixed atten)
+            half3 viewDir, fixed atten)
         {
             float difLight = dot(s.Normal, lightDir);
+            float rimLight = dot(s.Normal, viewDir);
             float hLambert = difLight * 0.5 + _HalfLambertRation;
-            float3 ramp = tex2D(_RampTex, -float2(hLambert, hLambert)).rgb;
+            float3 ramp = tex2D(_RampTex, float2(hLambert, rimLight)).rgb;
 
             float4 col;
             col.rgb = s.Albedo * _LightColor0.rgb * (ramp * atten);
