@@ -20,12 +20,12 @@ Shader "CookbookShaders/BlendLandscape"
 		LOD 200
 
 		CGPROGRAM
-		#pragma surface surf Standard Lambert
+		#pragma surface surf Standard Lambert  fullforwardshadows
 		#pragma target 3.5
 
-		float4 _MainTint;
-		float4 _ColorA;
-		float4 _ColorB;
+		fixed4 _MainTint;
+		fixed4 _ColorA;
+		fixed4 _ColorB;
 		sampler2D _RTex;
 		sampler2D _GTex;
 		sampler2D _BTex;
@@ -34,27 +34,27 @@ Shader "CookbookShaders/BlendLandscape"
 
 		struct Input
 		{
-			float2 uv_RTex;
-			float2 uv_GTex;
-			float2 uv_BTex;
-			float2 uv_ATex;
-			float2 uv_BlendTex;
+			fixed2 uv_RTex;
+			fixed2 uv_GTex;
+			fixed2 uv_BTex;
+			fixed2 uv_ATex;
+			fixed2 uv_BlendTex;
 		};
 
 		void surf(Input IN, inout SurfaceOutputStandard o)
 		{
-			float4 rTex = tex2D(_RTex, IN.uv_RTex);
-			float4 gTex = tex2D(_GTex, IN.uv_GTex);
-			float4 bTex = tex2D(_BTex, IN.uv_BTex);
-			float4 aTex = tex2D(_ATex, IN.uv_ATex);
-			float4 blend = tex2D(_BlendTex, IN.uv_BlendTex);
+			fixed4 rTex = tex2D(_RTex, IN.uv_RTex);
+			fixed4 gTex = tex2D(_GTex, IN.uv_GTex);
+			fixed4 bTex = tex2D(_BTex, IN.uv_BTex);
+			fixed4 aTex = tex2D(_ATex, IN.uv_ATex);
+			fixed4 blend = tex2D(_BlendTex, IN.uv_BlendTex);
 
-			float4 color = lerp(rTex, gTex, blend);
+			fixed4 color = lerp(rTex, gTex, blend);
 			color = lerp(color, bTex, blend);
 			color = lerp(color, aTex, blend);
 			color.a = 1;
 
-			float4 terrain = lerp(_ColorA, _ColorB, blend.r);
+			fixed4 terrain = lerp(_ColorA, _ColorB, blend.r);
 			color *= terrain;
 			color = saturate(color);
 

@@ -15,7 +15,7 @@ Shader "CookbookShaders/BasicDiffuse"
         LOD 200
 
         CGPROGRAM
-        #pragma surface surf BasicDiffuse
+        #pragma surface surf BasicDiffuse fullforwardshadows
 
         float4 _EmissiveColor;
         float4 _AmbientColor;
