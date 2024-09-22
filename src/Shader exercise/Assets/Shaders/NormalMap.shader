@@ -31,8 +31,8 @@ Shader "CookbookShaders/NormalMap"
 
 		void surf(Input IN, inout SurfaceOutputStandard o)
 		{
-			fixed3 normalMap = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap));
 			o.Albedo = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+			fixed3 normalMap = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap));
 			o.Normal = normalMap;
 		}
 		ENDCG
