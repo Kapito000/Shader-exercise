@@ -20,7 +20,7 @@ Shader "CookbookShaders/ProceduralTextrure"
 
 		struct Input
 		{
-			fixed uv_MainTex;
+			fixed2 uv_MainTex;
 		};
 
 		void surf(Input IN, inout SurfaceOutputStandard o)
